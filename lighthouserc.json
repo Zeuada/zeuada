@@ -9,7 +9,7 @@
         "http://localhost/about/",
         "http://localhost/legal/privacy/"
       ],
-      "numberOfRuns": 1,
+      "numberOfRuns": 3,
       "settings": { "chromeFlags": "--no-sandbox --headless=new" }
     },
     "assert": {

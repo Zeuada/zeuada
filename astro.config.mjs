@@ -8,8 +8,9 @@ export default defineConfig({
   trailingSlash: 'always',
   build: {
     format: 'directory',
-    // Inline small stylesheets so pages render without a blocking request.
-    inlineStylesheets: 'auto',
+    // The whole stylesheet is ~12 KB (~3 KB gzipped); inlining it removes the
+    // only render-blocking request.
+    inlineStylesheets: 'always',
   },
   // Old URLs to forward (GitHub Pages has no server-side redirects, so Astro
   // writes a small page at each old path that forwards to the new one):
