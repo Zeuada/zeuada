@@ -1,0 +1,40 @@
+---
+import ProseLayout from '../../layouts/ProseLayout.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import { site } from '../../site.config';
+
+const { company } = site;
+const lastUpdated = new Date('2026-09-30');
+const rows: { label: string; value: string | number | null; hint: string }[] = [
+  { label: 'Legal name', value: company.legalName, hint: 'registered legal name' },
+  { label: 'Entity type', value: company.entityType, hint: 'e.g. sole proprietorship, LLP, private limited' },
+  { label: 'Registration', value: company.registration, hint: 'registration number(s) where applicable' },
+  { label: 'Registered address', value: company.registeredAddress, hint: 'business or virtual-office address, not a home address' },
+  { label: 'Founded', value: company.foundingYear, hint: 'founding year' },
+  { label: 'Based in', value: company.location, hint: 'city, country' },
+];
+---
+<ProseLayout
+  title="Company details"
+  description="Legal and contact details for Zeuada, the independent software studio that makes Unloop."
+  lastUpdated={lastUpdated}
+>
+  <p>Zeuada is an independent software studio. It currently has one person: its founder.</p>
+  <dl class="facts">
+    {
+      rows.map((r) => (
+        <>
+          <dt>{r.label}</dt>
+          <dd>{r.value ?? <Placeholder kind="confirm">{r.hint}</Placeholder>}</dd>
+        </>
+      ))
+    }
+    <dt>General contact</dt>
+    <dd><a href={`mailto:${site.email.hello}`}>{site.email.hello}</a></dd>
+    <dt>Unloop support</dt>
+    <dd><a href={`mailto:${site.email.support}`}>{site.email.support}</a></dd>
+    <dt>Privacy</dt>
+    <dd><a href={`mailto:${site.email.privacy}`}>{site.email.privacy}</a></dd>
+  </dl>
+  {/* Keep these identical to the Play Console developer details and any D-U-N-S record. */}
+</ProseLayout>

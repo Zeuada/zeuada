@@ -1,0 +1,5 @@
+---
+import LegalEntry from '../../components/LegalEntry.astro';
+import { unloopAppLd } from '../../lib/jsonld';
+---
+<LegalEntry id="unloop-privacy" jsonLd={[unloopAppLd()]} />

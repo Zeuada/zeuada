@@ -1,0 +1,86 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Placeholder from './Placeholder.astro';
+
+interface Props {
+  /** Short version for the home page; long version for About. */
+  variant?: 'short' | 'long';
+}
+const { variant = 'short' } = Astro.props;
+const [founder] = (await getCollection('people')).sort((a, b) => a.data.order - b.data.order);
+const d = founder?.data;
+---
+<div class="founder-note">
+  <div class="portrait">
+    {
+      d?.photo ? (
+        <Image src={d.photo} alt={d.photoAlt ?? ''} width={160} height={160} class="photo" />
+      ) : (
+        <div class="photo empty" role="img" aria-label="Founder photo to be added">
+          <span class="placeholder small" data-placeholder="add">[FOUNDER TO ADD: photo]</span>
+        </div>
+      )
+    }
+  </div>
+  <div class="text">
+    {
+      variant === 'short' ? (
+        <Placeholder kind="write" block>
+          Two or three sentences in your own words, e.g. “I built Unloop because I kept losing evenings to Reels.
+          Zeuada exists to make tools I’d trust with my own attention.”
+        </Placeholder>
+      ) : (
+        <slot />
+      )
+    }
+    <p class="sig">
+      {d?.name ?? <Placeholder kind="confirm">founder name</Placeholder>}
+      <span class="muted">, {d?.role}</span>
+    </p>
+  </div>
+</div>
+
+<style>
+  .founder-note {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-6);
+    align-items: start;
+    max-width: var(--measure);
+  }
+
+  @media (max-width: 34rem) {
+    .founder-note {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .photo.empty {
+    display: grid;
+    place-items: center;
+    text-align: center;
+    background: var(--surface);
+    border: 1px dashed var(--mark-line);
+    padding: var(--space-3);
+  }
+
+  .photo.empty .placeholder {
+    border: 0;
+    background: none;
+    padding: 0;
+    font-size: 0.75rem;
+  }
+
+  .sig {
+    font-weight: 600;
+    margin-top: var(--space-4);
+  }
+</style>

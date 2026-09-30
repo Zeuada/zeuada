@@ -1,0 +1,20 @@
+---
+/**
+ * Visible marker for content the founder still has to supply or confirm.
+ * Rendered on purpose so gaps can't slip into production unnoticed.
+ * `npm run placeholders` lists every use.
+ */
+interface Props {
+  kind?: 'write' | 'add' | 'confirm' | 'verify';
+  block?: boolean;
+}
+const { kind = 'write', block = false } = Astro.props;
+const labels = {
+  write: 'FOUNDER TO WRITE',
+  add: 'FOUNDER TO ADD',
+  confirm: 'CONFIRM',
+  verify: 'VERIFY',
+} as const;
+const Tag = block ? 'p' : 'span';
+---
+<Tag class="placeholder" data-placeholder={kind}>[{labels[kind]}: <slot />]</Tag>

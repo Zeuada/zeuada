@@ -1,0 +1,75 @@
+---
+/**
+ * Phone frame for real app screenshots. Pass an optimized image via the
+ * default slot (e.g. <Image />). Without one, it shows a labelled slot
+ * rather than a mock-up of the app.
+ */
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+const hasScreenshot = Astro.slots.has('default');
+---
+<figure class="phone">
+  <div class="phone-screen">
+    {
+      hasScreenshot ? (
+        <slot />
+      ) : (
+        <div class="phone-empty">
+          <p class="phone-question">What are you feeling?</p>
+          <p class="placeholder small" data-placeholder="add">
+            [FOUNDER TO ADD: real screenshot — {label}]
+          </p>
+        </div>
+      )
+    }
+  </div>
+  <figcaption class="visually-hidden">{label}</figcaption>
+</figure>
+
+<style>
+  .phone {
+    margin: 0;
+    width: min(100%, 300px, 62vw);
+    aspect-ratio: 9 / 19.5;
+    padding: 12px;
+    border-radius: 44px;
+    background: #1d2250;
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.14) inset,
+      0 30px 60px -24px rgb(11 16 48 / 0.5);
+  }
+
+  .phone-screen {
+    height: 100%;
+    border-radius: 33px;
+    overflow: hidden;
+    background: var(--unloop-ink);
+    color: #eef0f8;
+  }
+
+  .phone-screen :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .phone-empty {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-5);
+    padding: var(--space-6) var(--space-5);
+  }
+
+  .phone-question {
+    font-size: var(--step-2);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    margin: 0;
+    color: var(--unloop-amber);
+  }
+</style>

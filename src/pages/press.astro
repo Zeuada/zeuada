@@ -1,0 +1,72 @@
+---
+import ProseLayout from '../layouts/ProseLayout.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { site } from '../site.config';
+
+const { company, founder, unloop } = site;
+const assets = [
+  { label: 'Zeuada mark (SVG)', href: '/press/zeuada-mark.svg' },
+  { label: 'Zeuada mark, for dark backgrounds (SVG)', href: '/press/zeuada-mark-dark.svg' },
+];
+---
+<ProseLayout
+  title="Press kit"
+  description="Facts, descriptions, logos and contact details for writing about Zeuada and Unloop."
+  intro="Everything you need to write about Zeuada and Unloop. If something is missing, just ask."
+>
+  <h2 id="about">About Zeuada and Unloop</h2>
+  <p>
+    Zeuada is an independent software studio building calm, research-grounded apps that help people protect their
+    attention. Its first app, Unloop, helps people break the Instagram Reels habit. Instead of blocking Instagram, Unloop
+    pauses the Reels feed, asks how you feel, and suggests something better to do, while a live counter keeps the day’s
+    reels and minutes visible. It is designed without shame or streaks, keeps data on the phone, and has no ads.
+  </p>
+
+  <h2 id="facts">Fact sheet</h2>
+  <dl class="facts">
+    <dt>Company</dt>
+    <dd>Zeuada{company.legalName && company.legalName !== 'Zeuada' ? ` (${company.legalName})` : ''}</dd>
+    <dt>Founded</dt>
+    <dd>{company.foundingYear ?? <Placeholder kind="confirm">founding year</Placeholder>}</dd>
+    <dt>Location</dt>
+    <dd>{company.location ?? <Placeholder kind="confirm">city, country</Placeholder>}</dd>
+    <dt>Founder</dt>
+    <dd>{founder.name ?? <Placeholder kind="confirm">founder name</Placeholder>}</dd>
+    <dt>Team</dt>
+    <dd>One person</dd>
+    <dt>Product</dt>
+    <dd>Unloop</dd>
+    <dt>Platform</dt>
+    <dd>Android (works with Instagram Reels)</dd>
+    <dt>Price</dt>
+    <dd>{unloop.price ?? <Placeholder kind="confirm">price</Placeholder>}</dd>
+    <dt>Launch date</dt>
+    <dd>{unloop.launchDate ?? <Placeholder kind="confirm">launch date</Placeholder>}</dd>
+    <dt>Website</dt>
+    <dd><a href="/unloop/">zeuada.com/unloop</a></dd>
+  </dl>
+
+  <h2 id="assets">Logos and images</h2>
+  <ul>
+    {
+      assets.map((a) => (
+        <li>
+          <a href={a.href} download>
+            {a.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <Placeholder kind="add" block>
+    Final Zeuada logo (the mark above is interim), PNG logos (light and dark), Unloop app icon (512 × 512), real app screenshots, feature graphic, and a founder photo.
+    Put files in public/press/ and list them above.
+  </Placeholder>
+  <p class="muted small">
+    Please don’t alter the logos. Unloop is not affiliated with Instagram or Meta, so please don’t pair Unloop with
+    Instagram’s logo.
+  </p>
+
+  <h2 id="contact">Press contact</h2>
+  <p><a href={`mailto:${site.email.press}`}>{site.email.press}</a>. {site.responsePromise}</p>
+</ProseLayout>

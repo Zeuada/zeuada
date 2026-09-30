@@ -1,0 +1,95 @@
+---
+import ProseLayout from '../../layouts/ProseLayout.astro';
+import { unloopAppLd } from '../../lib/jsonld';
+import { publishedResearch, sources, type Source } from '../../data/unloop';
+
+const cited: Source[] = [...new Set(publishedResearch.flatMap((r) => r.sources))].map((id) => sources[id]);
+const limits = [sources.mertens2022, sources.maier2022];
+const all = [...cited, ...limits].sort((a, b) => a.authors.localeCompare(b.authors));
+const num = new Map(all.map((s, i) => [s.id, i + 1]));
+const ref = (id: string) => `#src-${id}`;
+---
+<ProseLayout
+  title="The research behind Unloop"
+  description="The published research behind Unloop's design: affect labeling, progress monitoring, clear interruptions, time perception, feature-level interventions and self-compassion, with full sources."
+  intro="Every major design decision in Unloop traces back to published research. Here is what the research shows, how Unloop uses it, and where to read the original papers."
+  jsonLd={[unloopAppLd()]}
+>
+  <div class="notice small" role="note">
+    <p>
+      <strong>How to read this page.</strong> These findings describe the techniques Unloop uses. They are not results
+      measured with Unloop, and Unloop is a wellbeing tool, not a medical product. We’ll publish Unloop’s own results only
+      after a proper beta, with the sample size and method described. None of the researchers cited here are affiliated
+      with or endorse Unloop.
+    </p>
+  </div>
+
+  {
+    publishedResearch.map((r) => (
+      <section aria-labelledby={`r-${r.id}`}>
+        <h2 id={`r-${r.id}`}>{r.title}</h2>
+        <p>
+          <strong>In Unloop:</strong> {r.design}
+        </p>
+        <p>
+          <strong>What the research shows:</strong> {r.findings}{' '}
+          {r.sources.map((id, i) => (
+            <>
+              {i > 0 && ' '}
+              <a href={ref(id)} aria-label={`Source ${num.get(id)}: ${sources[id].authors.split(',')[0]} ${sources[id].year}`}>
+                [{num.get(id)}]
+              </a>
+            </>
+          ))}
+        </p>
+        {r.caveat && <p class="muted small">{r.caveat}</p>}
+      </section>
+    ))
+  }
+
+  <section aria-labelledby="limits">
+    <h2 id="limits">What the research doesn’t show</h2>
+    <p>
+      Behaviour-change techniques help on average, but effects vary a lot between people and situations. A large
+      meta-analysis of “nudges” found a small-to-medium average effect <a href={ref('mertens2022')}>[{num.get('mertens2022')}]</a>,
+      and a later re-analysis argued that the evidence for an overall effect disappears once publication bias is taken
+      into account <a href={ref('maier2022')}>[{num.get('maier2022')}]</a>. That’s one reason Unloop combines several
+      techniques, keeps you in control, and makes no promises about outcomes.
+    </p>
+  </section>
+
+  <section aria-labelledby="sources">
+    <h2 id="sources">Sources</h2>
+    <ol class="sources">
+      {
+        all.map((s) => (
+          <li id={`src-${s.id}`}>
+            {s.authors} ({s.year}). {s.title}{/[.?!]$/.test(s.title) ? '' : '.'} <em>{s.venue}</em>.{' '}
+            {s.url ? (
+              <a href={s.url} rel="noopener">
+                {s.url.replace(/^https:\/\//, '')}
+              </a>
+            ) : (
+              <span class="placeholder">[VERIFY: link]</span>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+    <p class="muted small">
+      Spotted an error in a citation? Please tell us at <a href="mailto:hello@zeuada.com">hello@zeuada.com</a> and we’ll
+      fix it and note the change on the <a href="/updates/">updates page</a>.
+    </p>
+  </section>
+</ProseLayout>
+
+<style>
+  .sources {
+    font-size: var(--step--1);
+    padding-left: 1.5em;
+  }
+
+  .sources a {
+    word-break: break-word;
+  }
+</style>

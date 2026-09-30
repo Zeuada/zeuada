@@ -1,0 +1,19 @@
+---
+import { site } from '../site.config';
+import Placeholder from './Placeholder.astro';
+
+interface Props {
+  label?: string;
+}
+const { label = 'Get Unloop on Google Play' } = Astro.props;
+const url = site.unloop.playStoreUrl;
+---
+{
+  url ? (
+    <a class="button" href={url} rel="noopener">
+      {label}
+    </a>
+  ) : (
+    <Placeholder kind="confirm">Google Play link for “{label}” button</Placeholder>
+  )
+}

@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDate, isoDate } from '../lib/format';
+
+interface Props {
+  entry: CollectionEntry<'updates'>;
+  headingLevel?: 2 | 3;
+}
+const { entry, headingLevel = 2 } = Astro.props;
+const H = `h${headingLevel}` as 'h2' | 'h3';
+---
+<article class="update">
+  <p class="date muted small"><time datetime={isoDate(entry.data.date)}>{formatDate(entry.data.date)}</time></p>
+  <H class="title"><a href={`/updates/${entry.id}/`}>{entry.data.title}</a></H>
+  <p class="muted">{entry.data.summary}</p>
+</article>
+
+<style>
+  .update {
+    max-width: var(--measure);
+  }
+  .date {
+    margin-bottom: var(--space-1);
+  }
+  .title {
+    font-size: var(--step-1);
+    margin-bottom: var(--space-2);
+  }
+  .title a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .title a:hover {
+    text-decoration: underline;
+  }
+</style>

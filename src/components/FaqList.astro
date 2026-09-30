@@ -1,0 +1,71 @@
+---
+import { visibleFaqs } from '../data/unloop';
+import { site } from '../site.config';
+import Placeholder from './Placeholder.astro';
+---
+<div class="faq">
+  {
+    visibleFaqs.map((f) => {
+      const isPrice = f.placeholder === 'confirm' && f.q === 'Is it free?';
+      return (
+        <details>
+          <summary>{f.q}</summary>
+          <div class="answer">
+            {isPrice ? (
+              site.unloop.price ? (
+                <p>{site.unloop.price}</p>
+              ) : (
+                <p>
+                  <Placeholder kind="confirm">pricing</Placeholder>
+                </p>
+              )
+            ) : (
+              <p>{f.a}</p>
+            )}
+          </div>
+        </details>
+      );
+    })
+  }
+</div>
+
+<style>
+  .faq {
+    max-width: var(--measure);
+    border-top: 1px solid var(--line);
+  }
+
+  details {
+    border-bottom: 1px solid var(--line);
+  }
+
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+    padding: var(--space-4) var(--space-6) var(--space-4) 0;
+    list-style: none;
+    position: relative;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: var(--space-4);
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  details[open] summary::after {
+    content: '–';
+  }
+
+  .answer p {
+    color: var(--muted);
+    margin: 0 0 var(--space-4);
+  }
+</style>

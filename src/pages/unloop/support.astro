@@ -1,0 +1,78 @@
+---
+import ProseLayout from '../../layouts/ProseLayout.astro';
+import FaqList from '../../components/FaqList.astro';
+import { unloopAppLd } from '../../lib/jsonld';
+import { site } from '../../site.config';
+---
+<ProseLayout
+  title="Unloop help and support"
+  description="Answers to common questions about Unloop, fixes for when the pause stops appearing, and how to contact support."
+  intro="Answers to common questions, fixes for the most common problems, and how to reach a real person."
+  jsonLd={[unloopAppLd()]}
+>
+  <h2 id="contact">Contact support</h2>
+  <p>
+    Email <a href={`mailto:${site.email.support}`}>{site.email.support}</a>. {site.responsePromise} It helps to include
+    your phone model, Android version, and what you expected to happen.
+  </p>
+
+  <h2 id="faq">Frequently asked questions</h2>
+  <FaqList />
+
+  <h2 id="troubleshooting">Troubleshooting</h2>
+
+  <h3 id="accessibility-off">The pause stopped appearing</h3>
+  <p>
+    Unloop relies on Android’s accessibility service to know when the Reels screen is open. Android can turn this off
+    after a system update, if the app is force-stopped, or if the phone’s battery manager closes it. To turn it back on:
+  </p>
+  <ol>
+    <li>Open your phone’s <strong>Settings</strong>.</li>
+    <li>Go to <strong>Accessibility</strong>, then <strong>Installed apps</strong> or <strong>Downloaded apps</strong>.</li>
+    <li>Tap <strong>Unloop</strong> and switch it on.</li>
+  </ol>
+  <p class="muted">Menu names differ between phone brands and Android versions. If you can’t find it, search Settings for “Accessibility”.</p>
+
+  <h3 id="battery">Unloop keeps getting switched off (battery optimization)</h3>
+  <p>
+    Some phone brands close background apps aggressively to save battery, which can stop Unloop working until you open
+    it again. Allowing Unloop to run in the background usually fixes this. The steps vary by brand and software version:
+  </p>
+  <ul>
+    <li>
+      <strong>Most Android phones:</strong> Settings → Apps → Unloop → Battery → <em>Unrestricted</em>.
+    </li>
+    <li>
+      <strong>Samsung:</strong> Settings → Battery → Background usage limits → <em>Never sleeping apps</em> → add Unloop.
+    </li>
+    <li>
+      <strong>Xiaomi, Redmi and POCO:</strong> Settings → Apps → Manage apps → Unloop → Battery saver → <em>No restrictions</em>,
+      and turn on <em>Autostart</em>.
+    </li>
+    <li>
+      <strong>OnePlus, OPPO and realme:</strong> Settings → Battery → App battery management → Unloop → allow background
+      activity.
+    </li>
+    <li>
+      <strong>vivo:</strong> Settings → Battery → Background power consumption management → Unloop → <em>Allow</em>.
+    </li>
+  </ul>
+  <p class="muted">
+    For step-by-step instructions for your exact phone, <a href="https://dontkillmyapp.com" rel="noopener">dontkillmyapp.com</a>
+    keeps an up-to-date guide.
+  </p>
+
+  <h3 id="instagram-changed">Instagram updated and the pause misses the Reels screen</h3>
+  <p>
+    Instagram changes its layout from time to time. Unloop can adapt to many of these changes without an app update, so
+    it may start working again without you doing anything. If it doesn’t, please email
+    <a href={`mailto:${site.email.support}`}>{site.email.support}</a> with your Instagram version (Settings → Apps →
+    Instagram).
+  </p>
+
+  <h2 id="privacy">Privacy</h2>
+  <p>
+    Unloop stores your data on your phone and doesn’t read your messages. Read the <a href="/unloop/privacy/">Unloop privacy policy</a>
+    or email <a href={`mailto:${site.email.privacy}`}>{site.email.privacy}</a>.
+  </p>
+</ProseLayout>

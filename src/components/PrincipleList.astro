@@ -1,0 +1,50 @@
+---
+import { principles } from '../data/principles';
+---
+<ol class="principles">
+  {
+    principles.map((p) => (
+      <li>
+        <h3>{p.title}</h3>
+        <p>{p.body}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .principles {
+    list-style: none;
+    counter-reset: p;
+    padding: 0;
+    margin: 0;
+    max-width: var(--measure);
+  }
+
+  .principles li {
+    counter-increment: p;
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    column-gap: var(--space-3);
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+
+  .principles li::before {
+    content: counter(p);
+    grid-row: span 2;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: var(--step-1);
+    line-height: 1.2;
+  }
+
+  .principles h3 {
+    margin-bottom: var(--space-1);
+  }
+
+  .principles p {
+    color: var(--muted);
+    margin: 0;
+  }
+</style>

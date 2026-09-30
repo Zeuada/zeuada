@@ -1,0 +1,120 @@
+---
+import { site } from '../site.config';
+const { company } = site;
+const year = new Date().getFullYear();
+const meta = [
+  company.location,
+  company.foundingYear ? `Founded ${company.foundingYear}` : null,
+].filter(Boolean);
+---
+<footer class="site-footer">
+  <div class="wrap cols">
+    <div class="about">
+      <p class="name">Zeuada</p>
+      <p class="muted">Calm, research-grounded software that helps people protect their attention.</p>
+      <p>
+        <a href={`mailto:${site.email.hello}`}>{site.email.hello}</a>
+      </p>
+      {meta.length > 0 && <p class="muted small">{meta.join(' · ')}</p>}
+    </div>
+    <nav aria-label="Products">
+      <p class="heading">Unloop</p>
+      <ul>
+        <li><a href="/unloop/">Overview</a></li>
+        <li><a href="/unloop/research/">Research</a></li>
+        <li><a href="/unloop/support/">Support</a></li>
+        <li><a href="/unloop/privacy/">Privacy policy</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Company">
+      <p class="heading">Company</p>
+      <ul>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/principles/">How we build</a></li>
+        <li><a href="/updates/">Updates</a></li>
+        <li><a href="/press/">Press</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Legal">
+      <p class="heading">Legal</p>
+      <ul>
+        <li><a href="/legal/company/">Company details</a></li>
+        <li><a href="/legal/terms/">Terms of use</a></li>
+        <li><a href="/legal/privacy/">Website privacy</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap base small muted">
+    <p>© {year} {company.legalName ?? 'Zeuada'}. No cookies, no trackers, no ads.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding-top: var(--space-7);
+    margin-top: var(--space-8);
+    font-size: var(--step--1);
+  }
+
+  .cols {
+    display: grid;
+    grid-template-columns: 2fr repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+
+  @media (max-width: 48rem) {
+    .cols {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .about {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .name {
+    font-weight: 700;
+    font-size: var(--step-1);
+    margin-bottom: var(--space-2);
+  }
+
+  .about p.muted {
+    max-width: 34ch;
+  }
+
+  .heading {
+    font-weight: 600;
+    margin-bottom: var(--space-3);
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li + li {
+    margin-top: var(--space-2);
+  }
+
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  .base {
+    border-top: 1px solid var(--line);
+    margin-top: var(--space-7);
+    padding-block: var(--space-5);
+  }
+
+  .base p {
+    margin: 0;
+  }
+</style>

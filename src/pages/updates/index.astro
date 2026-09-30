@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import UpdateItem from '../../components/UpdateItem.astro';
+
+const updates = (await getCollection('updates')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<BaseLayout
+  title="Updates"
+  description="Dated updates from Zeuada: Unloop releases, fixes and research notes, newest first."
+>
+  <div class="wrap section">
+    <header class="prose">
+      <h1>Updates</h1>
+      <p class="lede">Releases, fixes and research notes, newest first.</p>
+    </header>
+    <ol class="updates">
+      {
+        updates.map((u) => (
+          <li>
+            <UpdateItem entry={u} />
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</BaseLayout>
+
+<style>
+  .updates {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-7) 0 0;
+    max-width: var(--measure);
+  }
+
+  .updates li {
+    border-top: 1px solid var(--line);
+    padding-block: var(--space-5);
+  }
+</style>

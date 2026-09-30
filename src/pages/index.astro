@@ -1,0 +1,132 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PhoneFrame from '../components/PhoneFrame.astro';
+import PlayButton from '../components/PlayButton.astro';
+import FounderNote from '../components/FounderNote.astro';
+import UpdateItem from '../components/UpdateItem.astro';
+import { homePrinciples } from '../data/principles';
+import { site } from '../site.config';
+
+const [latest] = (await getCollection('updates')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const strip = [
+  {
+    title: 'Pause and notice',
+    body: 'When you open Reels, Unloop pauses and asks what you’re feeling. A few seconds of noticing turns a reflex into a choice.',
+  },
+  {
+    title: 'A live reel counter',
+    body: 'Today’s reels and minutes stay visible while you scroll, so time doesn’t disappear unnoticed.',
+  },
+  {
+    title: 'Better alternatives',
+    body: 'Small things to do instead, matched to how you feel and the time of day. Or keep watching for a set time. Your choice.',
+  },
+];
+---
+<BaseLayout title={site.name} description={site.description}>
+  <section class="hero wrap">
+    <div class="hero-text">
+      <h1>Software that protects your attention.</h1>
+      <p class="lede">
+        Zeuada is an independent studio building calm, research-grounded apps. Our first app, Unloop, helps you break
+        the Instagram Reels habit.
+      </p>
+      <div class="actions">
+        <PlayButton />
+        <a class="text-link" href="/unloop/#how-it-works">How Unloop works</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <PhoneFrame label="Unloop pause screen asking “What are you feeling?”" />
+    </div>
+  </section>
+
+  <section class="section wrap" aria-labelledby="unloop-heading">
+    <div class="section-head">
+      <h2 id="unloop-heading">Unloop</h2>
+      <p>
+        Instead of blocking Instagram, Unloop catches the moment a scroll begins, helps you notice what you’re feeling,
+        and offers something better.
+      </p>
+    </div>
+    <ul class="list-grid">
+      {
+        strip.map((item) => (
+          <li>
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="more"><a class="text-link" href="/unloop/">More about Unloop</a></p>
+  </section>
+
+  <section class="section wrap" aria-labelledby="principles-heading">
+    <div class="section-head">
+      <h2 id="principles-heading">How we build</h2>
+    </div>
+    <ul class="list-grid">
+      {
+        homePrinciples.map((p) => (
+          <li>
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="more"><a class="text-link" href="/principles/">All five principles</a></p>
+  </section>
+
+  <section class="section wrap" aria-labelledby="founder-heading">
+    <h2 id="founder-heading">A note from the founder</h2>
+    <FounderNote variant="short" />
+    <p class="more"><a class="text-link" href="/about/">About Zeuada</a></p>
+  </section>
+
+  {
+    latest && (
+      <section class="section wrap" aria-labelledby="latest-heading">
+        <h2 id="latest-heading">Latest update</h2>
+        <UpdateItem entry={latest} headingLevel={3} />
+        <p class="more">
+          <a class="text-link" href="/updates/">All updates</a>
+        </p>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: center;
+    padding-block: var(--space-8);
+  }
+
+  .hero h1 {
+    font-size: clamp(2.3rem, 1.6rem + 3.2vw, 4rem);
+    max-width: 14ch;
+  }
+
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (max-width: 52rem) {
+    .hero {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .more {
+    margin-top: var(--space-6);
+    margin-bottom: 0;
+  }
+</style>

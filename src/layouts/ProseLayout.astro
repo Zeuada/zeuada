@@ -1,0 +1,45 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { formatDate } from '../lib/format';
+
+interface Props {
+  title: string;
+  description: string;
+  lastUpdated?: Date;
+  /** Shows the "needs professional review" notice on legal drafts. */
+  legalDraft?: boolean;
+  jsonLd?: Record<string, unknown>[];
+  intro?: string;
+}
+const { title, description, lastUpdated, legalDraft = false, jsonLd, intro } = Astro.props;
+
+---
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <article class="wrap section">
+    <header class="prose">
+      <h1>{title}</h1>
+      {intro && <p class="lede">{intro}</p>}
+      {
+        lastUpdated && (
+          <p class="muted small">
+            Last updated: <time datetime={lastUpdated.toISOString().slice(0, 10)}>{formatDate(lastUpdated)}</time>
+          </p>
+        )
+      }
+    </header>
+    {
+      legalDraft && (
+        <div class="notice small" role="note">
+          <p>
+            <strong>Draft.</strong> This text has not yet been reviewed by a qualified professional and may change
+            before Unloop's public launch. If anything here is unclear, email{' '}
+            <a href="mailto:privacy@zeuada.com">privacy@zeuada.com</a>.
+          </p>
+        </div>
+      )
+    }
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,59 @@
+---
+import ProseLayout from '../layouts/ProseLayout.astro';
+import { site } from '../site.config';
+
+const channels = [
+  { label: 'Help with Unloop', email: site.email.support, note: 'Questions, bugs, or something not working.' },
+  { label: 'Privacy questions', email: site.email.privacy, note: 'Anything about your data or our policies.' },
+  { label: 'Everything else', email: site.email.hello, note: 'Press, feedback, research, or just hello.' },
+];
+---
+<ProseLayout
+  title="Contact"
+  description="How to reach Zeuada: support for Unloop, privacy questions, and everything else. A real person reads every message."
+  intro={site.responsePromise}
+>
+  <ul class="channels">
+    {
+      channels.map((c) => (
+        <li>
+          <h2>{c.label}</h2>
+          <p class="muted">{c.note}</p>
+          <p>
+            <a href={`mailto:${c.email}`}>{c.email}</a>
+          </p>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="muted small">
+    There’s no phone line, no chatbot and no ticket system. Your email goes straight to the person who builds Unloop.
+  </p>
+</ProseLayout>
+
+<style>
+  .channels {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-6) 0;
+  }
+
+  .channels li {
+    border-top: 1px solid var(--line);
+    padding-block: var(--space-5);
+  }
+
+  .channels h2 {
+    font-size: var(--step-1);
+    margin: 0 0 var(--space-1);
+  }
+
+  .channels p {
+    margin-bottom: var(--space-2);
+  }
+
+  .channels a {
+    font-size: var(--step-1);
+    font-weight: 600;
+  }
+</style>

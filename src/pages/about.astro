@@ -1,0 +1,152 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FounderNote from '../components/FounderNote.astro';
+import PrincipleList from '../components/PrincipleList.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { site } from '../site.config';
+
+const people = (await getCollection('people')).sort((a, b) => a.data.order - b.data.order);
+const { company } = site;
+---
+<BaseLayout
+  title="About"
+  description="Zeuada is an independent, one-person software studio making calm, research-grounded apps. Meet the founder and read how we build."
+>
+  <div class="wrap section">
+    <header class="prose">
+      <h1>About Zeuada</h1>
+      <p class="lede">
+        Zeuada makes software that respects people’s time. It’s an independent studio, and right now it’s one person.
+      </p>
+    </header>
+  </div>
+
+  <section class="wrap section" aria-labelledby="note">
+    <h2 id="note">Why Zeuada exists</h2>
+    <FounderNote variant="long">
+      <div class="prose">
+        <Placeholder kind="write" block>
+          Founder note in the first person, three to five short paragraphs: why you started Zeuada, your background, and
+          how Unloop began. Honest and specific; no buzzwords.
+        </Placeholder>
+        <p>
+          Being small has real benefits. When you write to Zeuada, you reach the person who builds the product. Fixes ship
+          quickly, and decisions are made for the people using the apps, which is why they can be designed to be used
+          less, not more.
+        </p>
+      </div>
+    </FounderNote>
+  </section>
+
+  <section class="wrap section" aria-labelledby="facts">
+    <h2 id="facts">Facts</h2>
+    <dl class="facts">
+      <dt>Founded</dt>
+      <dd>{company.foundingYear ?? <Placeholder kind="confirm">founding year</Placeholder>}</dd>
+      <dt>Based in</dt>
+      <dd>{company.location ?? <Placeholder kind="confirm">city, country</Placeholder>}</dd>
+      <dt>Team</dt>
+      <dd>One person</dd>
+      <dt>Products</dt>
+      <dd><a href="/unloop/">Unloop</a>, for Android</dd>
+      <dt>Funding</dt>
+      <dd><Placeholder kind="confirm">e.g. “Self-funded. No outside investors.”</Placeholder></dd>
+    </dl>
+    <p class="small muted"><a href="/legal/company/">Full company details</a></p>
+  </section>
+
+  <section class="wrap section" aria-labelledby="people">
+    <h2 id="people">People</h2>
+    <ul class="people">
+      {
+        people.map(({ data: p }) => (
+          <li class="person">
+            {p.photo ? (
+              <Image src={p.photo} alt={p.photoAlt ?? ''} width={96} height={96} class="avatar" />
+            ) : (
+              <div class="avatar empty" aria-hidden="true" />
+            )}
+            <div>
+              <h3>{p.name ?? <Placeholder kind="confirm">name</Placeholder>}</h3>
+              <p class="muted">{p.role}</p>
+              <p>{p.bio ?? <Placeholder kind="write">one-line bio</Placeholder>}</p>
+              {p.links.length > 0 ? (
+                <p class="links">
+                  {p.links.map((l) => (
+                    <a href={l.url} rel="me noopener">
+                      {l.label}
+                    </a>
+                  ))}
+                </p>
+              ) : (
+                <p>
+                  <Placeholder kind="add">professional profile link, e.g. LinkedIn or GitHub</Placeholder>
+                </p>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="wrap section" aria-labelledby="principles">
+    <h2 id="principles">How we build</h2>
+    <PrincipleList />
+  </section>
+
+  <section class="wrap section" aria-labelledby="contact">
+    <div class="prose">
+      <h2 id="contact">Get in touch</h2>
+      <p>
+        Email <a href={`mailto:${site.email.hello}`}>{site.email.hello}</a>. {site.responsePromise}
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .people {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: var(--space-6);
+  }
+
+  .person {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: var(--space-5);
+    align-items: start;
+  }
+
+  .person h3 {
+    margin-bottom: 0;
+  }
+
+  .person p {
+    margin-bottom: var(--space-2);
+  }
+
+  .avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .avatar.empty {
+    background: var(--surface);
+    border: 1px dashed var(--mark-line);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+</style>
