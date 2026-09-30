@@ -282,5 +282,5 @@ These affect what the website must show and what's public:
 - **Unloop features** live in `src/data/unloop.ts` with the status column from the Unloop brief. Only `status: 'built'` features render. To launch a feature, change its status after confirming it is built and tested.
 - **Research entries and sources** also live in `src/data/unloop.ts`. A source gets a link only once it has been verified.
 - **Content collections** (`src/content/`): `updates` (dated posts), `legal` (legal pages with `lastUpdated`), `people` (team cards), `products`.
-- Hosting is Cloudflare Pages. Security headers are in `public/_headers` and redirects in `public/_redirects`.
+- Hosting is GitHub Pages at zeuada.com. `.github/workflows/deploy.yml` deploys on pushes to `main` only, after `npm run verify` passes. GitHub Pages can't send custom headers, so the content security policy is a meta tag in `src/layouts/BaseLayout.astro`. Redirects from old URLs go in `redirects` in `astro.config.mjs`.
 - No client-side JavaScript, trackers, cookies or third-party requests. The font (Onest) is self-hosted through `@fontsource-variable/onest`.

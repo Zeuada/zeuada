@@ -9,7 +9,7 @@ The previous site couldn't be fetched automatically (the server blocked automate
 | The founder's background and skills, if still accurate | Stock photos, placeholder text, generic taglines |
 | Existing contact channels that still work | Dead links, old phone numbers, old addresses |
 
-Rewrite anything you keep in the site's voice (calm, honest, specific; CLAUDE.md, section 4). Put confirmed facts in `src/site.config.ts`, and add any indexed old URLs to `public/_redirects`.
+Rewrite anything you keep in the site's voice (calm, honest, specific; CLAUDE.md, section 4). Put confirmed facts in `src/site.config.ts`, and add any indexed old URLs to `redirects` in `astro.config.mjs`.
 
 ---
 

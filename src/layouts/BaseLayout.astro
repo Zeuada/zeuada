@@ -23,12 +23,19 @@ const ogImage =
 const fullTitle = title === site.name ? `${site.name} — software that protects your attention` : `${title} — ${site.name}`;
 const canonical = new URL(Astro.url.pathname.endsWith('/') ? Astro.url.pathname : Astro.url.pathname + '/', site.url).href;
 const ogUrl = new URL(ogImage, site.url).href;
+// GitHub Pages can't send custom response headers, so the content security
+// policy is set with a meta tag. Only in production builds, so it doesn't
+// interfere with the dev server's injected scripts.
+const csp =
+  "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:; upgrade-insecure-requests";
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {import.meta.env.PROD && <meta http-equiv="Content-Security-Policy" content={csp} />}
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}

@@ -17,7 +17,7 @@ Nearly nothing.
 
 ## Server logs
 
-The site is hosted on Cloudflare Pages. Like any web host, Cloudflare processes technical information to deliver pages and protect the site from abuse, such as your IP address, browser type, the page requested and the time of the request. We don't use this information to identify or track visitors. See [Cloudflare's privacy policy](https://www.cloudflare.com/privacypolicy/) for how it handles this data.
+The site is hosted on GitHub Pages. Like any web host, GitHub processes technical information to deliver pages and keep the service secure, such as your IP address, browser type, the page requested and the time of the request. We don't have access to these logs and don't use them to identify or track visitors. See the [GitHub General Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement) for how GitHub handles this data.
 
 ## Email
 

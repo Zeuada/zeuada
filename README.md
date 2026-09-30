@@ -3,7 +3,7 @@
 The website for Zeuada, an independent software studio, and its first app, Unloop. It's a static [Astro](https://astro.build) site: no client-side JavaScript, no cookies, no trackers, no third-party requests.
 
 - **Brief:** [`CLAUDE.md`](CLAUDE.md) (company site) and [`content/briefs/unloop-brief.md`](content/briefs/unloop-brief.md) (Unloop product, research and claims checklist).
-- **Hosting:** Cloudflare Pages, deployed from git. Build command `npm run build`, output directory `dist`, Node 22.
+- **Hosting:** GitHub Pages at zeuada.com, deployed by `.github/workflows/deploy.yml` on every push to `main` (and only `main`). The deploy runs `npm run verify` first; if any check fails, nothing is published.
 
 ## Commands
 
@@ -18,7 +18,7 @@ The website for Zeuada, an independent software studio, and its first app, Unloo
 | `npm run placeholders` | List every fact and piece of copy still waiting on the founder |
 | `npm run og` | Regenerate the Open Graph images in `public/og/` (needs Playwright) |
 
-GitHub Actions runs the same checks on every push (`.github/workflows/ci.yml`).
+GitHub Actions runs the same checks, plus Lighthouse CI, on every push (`.github/workflows/ci.yml`).
 
 ## Where things live
 
@@ -31,7 +31,8 @@ GitHub Actions runs the same checks on every push (`.github/workflows/ci.yml`).
 | Legal texts (terms, website privacy, Unloop privacy policy) | `src/content/legal/*.md` |
 | Team cards | `src/content/people/*.md` |
 | Design tokens, type scale, dark mode | `src/styles/global.css` |
-| Security headers, redirects | `public/_headers`, `public/_redirects` |
+| Content security policy | `src/layouts/BaseLayout.astro` (meta tag; GitHub Pages can't send custom headers) |
+| Redirects from old URLs | `redirects` in `astro.config.mjs` |
 | Press kit files | `public/press/` |
 | Old site content, to triage | `content/legacy/old-site.md` |
 
@@ -47,7 +48,21 @@ GitHub Actions runs the same checks on every push (`.github/workflows/ci.yml`).
 - **An update:** add `src/content/updates/YYYY-MM-DD-slug.md` with `title`, `date` and `summary`.
 - **A person:** add `src/content/people/name.md`. Put their photo next to it and reference it as `photo: ./name.jpg`. When the team grows, switch the About page from "I" to "we".
 - **Real screenshots:** put them in `src/assets/` and pass an `<Image />` into `<PhoneFrame>` on the home and Unloop pages.
-- **A contact form:** the site uses `mailto:` links. If you want a form later, a Cloudflare Pages Function can send email without any third-party script.
+- **A contact form:** the site uses `mailto:` links. GitHub Pages can't run server code, so a form would need a separate email service; `mailto:` keeps the site free of third parties.
+
+## Deploying
+
+One-time setup in the GitHub repository:
+
+1. **Settings → Pages → Build and deployment → Source:** choose **GitHub Actions**.
+2. **Settings → Pages → Custom domain:** enter `zeuada.com` and save. (With Actions deploys, a `CNAME` file in the repo is ignored; the setting is what counts.)
+3. At your DNS provider, point the apex domain at GitHub Pages: four `A` records for `zeuada.com` to `185.199.108.153`, `185.199.109.153`, `185.199.110.153` and `185.199.111.153` (plus the matching `AAAA` records if you want IPv6), and a `CNAME` record for `www` to `zeuada.github.io`. Check GitHub's "Managing a custom domain for your GitHub Pages site" docs for the current values.
+4. Optional but recommended: **Settings → Pages → Verify** the domain for your account or organization, so nobody else can claim it.
+5. Once the DNS check passes, tick **Enforce HTTPS**.
+
+After that, every push to `main` publishes the site. You can also re-run a deploy from the Actions tab ("Deploy to GitHub Pages" → Run workflow).
+
+GitHub Pages can't set custom response headers such as HSTS or `frame-ancestors`. The site sets its content security policy with a meta tag instead, and HTTPS is enforced by the Pages setting above.
 
 ## Before launch
 
